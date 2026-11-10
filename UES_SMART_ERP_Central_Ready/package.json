@@ -1,0 +1,23 @@
+{
+  "name": "ues-smart-erp-central",
+  "productName": "UES SMART ERP",
+  "version": "3.0.0",
+  "private": true,
+  "description": "UES Smart ERP secure multi-user central desktop client",
+  "main": "electron/main.js",
+  "scripts": {
+    "build:web": "node scripts/build-web.cjs",
+    "start": "electron .",
+    "build:windows": "electron-builder --win nsis",
+    "build:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {"electron":"^38.0.0", "electron-builder":"^26.0.0", "tailwindcss":"3.4.17"},
+  "build": {
+    "appId":"com.ues.smart.erp.central",
+    "productName":"UES SMART ERP",
+    "directories":{"output":"release"},
+    "files":["package.json","electron/**/*"],
+    "win":{"target":["nsis"],"artifactName":"UES-Smart-ERP-Central-Setup-${version}.${ext}"},
+    "nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true,"createStartMenuShortcut":true}
+  }
+}

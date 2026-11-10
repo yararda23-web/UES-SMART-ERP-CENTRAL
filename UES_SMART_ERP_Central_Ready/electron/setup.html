@@ -1,0 +1,12 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>ربط نظام المتحدة بالسيرفر</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<style>body{font-family:Tahoma,Arial;background:#0b1f33;color:#142c46;display:grid;place-items:center;min-height:95vh}main{width:min(600px,90vw);background:#fff;border-radius:20px;padding:36px;box-shadow:0 18px 40px #0004}h1{font-size:25px}p{line-height:1.9;color:#475569}input{box-sizing:border-box;width:100%;padding:16px;border:1px solid #94a3b8;border-radius:9px;direction:ltr;font-size:16px}button{background:#0d9488;color:white;padding:15px 25px;font-weight:bold;border:none;border-radius:10px;width:100%;font-size:18px;cursor:pointer;margin-top:15px}button:disabled{opacity:.5}#status{min-height:25px;color:#c2410c;font-weight:bold}small{color:#64748b}</style></head>
+<body><main><div style="color:#0d9488;font-weight:bold">UES · المتحدة للخدمات التعليمية</div><h1>ربط البرنامج بالسيرفر المركزي</h1>
+<p>يتم إدخال الرابط مرة واحدة لكل جهاز. كل الموظفين سيستخدمون نفس قاعدة البيانات، لكن كل موظف يدخل بحسابه وصلاحياته الخاصة.</p>
+<form id="f"><label>رابط السيرفر</label><input id="url" placeholder="https://your-ues-server.up.railway.app" autocomplete="off" required><button id="btn">فحص الاتصال وحفظ الرابط</button></form>
+<p id="status" role="status"></p><small>لا تضع عنوان PostgreSQL أو كلمة مرور هنا. المطلوب رابط تطبيق UES HTTPS فقط.</small>
+</main><script>
+const f=document.getElementById('f'), b=document.getElementById('btn'),s=document.getElementById('status');
+window.UESConnection?.onStatus(x=>{s.textContent=x});
+f.addEventListener('submit',async e=>{e.preventDefault();b.disabled=true;s.textContent='جارٍ فحص السيرفر...';try{await window.UESConnection.connect(document.getElementById('url').value);}catch(err){s.textContent='فشل الاتصال: '+err.message;b.disabled=false;}});
+</script></body></html>

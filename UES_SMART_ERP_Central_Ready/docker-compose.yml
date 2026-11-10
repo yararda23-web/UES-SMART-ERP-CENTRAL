@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ues
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ues_erp
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ues -d ues_erp"]
+      interval: 5s
+      retries: 10
+  app:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://ues:${POSTGRES_PASSWORD}@db:5432/ues_erp
+      UES_ALLOWED_HOSTS: localhost,127.0.0.1
+      UES_PUBLIC_URL: http://localhost:8000
+      UES_TRUST_PROXY: "false"
+    depends_on:
+      db: {condition: service_healthy}
+volumes:
+  pg_data:
